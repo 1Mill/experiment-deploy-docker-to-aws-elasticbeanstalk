@@ -54,7 +54,7 @@ resource "aws_elastic_beanstalk_environment" "default" {
 	setting {
 		name = "IamInstanceProfile"
 		namespace = "aws:autoscaling:launchconfiguration"
-		value = "primary-admin"
+		value = aws_iam_instance_profile.default.name
 	}
 
 	// Environmental settings
