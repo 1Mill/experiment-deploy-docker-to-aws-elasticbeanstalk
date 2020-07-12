@@ -1,6 +1,13 @@
+// Create IAM role to manage elasticbeanstalk
+resource "aws_iam_instance_profile" "default" {
+}
+
+// Create environment
 resource "aws_elastic_beanstalk_application" "default" {
 	name = "terraform-beanstalk-docker-example"
 }
+
+// Create Application
 resource "aws_elastic_beanstalk_environment" "default" {
 	application = aws_elastic_beanstalk_application.default.name
 	name = "production"
