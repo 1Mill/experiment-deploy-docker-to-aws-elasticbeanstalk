@@ -1,5 +1,27 @@
 // Create IAM role to manage elasticbeanstalk
+resource "aws_iam_role_policy_attachment" "default" {
+	policy_arn  = "arn:aws:iam::aws:policy/AdministratorAccess"
+	role = aws_iam_role.default.name
+}
+resource "aws_iam_role" "default" {
+	assume_role_policy = <<EOF
+{
+	"Statement": [
+		{
+			"Action": "sts:AssumeRole",
+			"Effect": "Allow",
+			"Principal": {
+				"Service": "ec2.amazonaws.com"
+			},
+			"Sid": ""
+		}
+	],
+	"Version": "2012-10-17"
+}
+EOF
+}
 resource "aws_iam_instance_profile" "default" {
+	role = aws_iam_role.default.name
 }
 
 // Create environment
