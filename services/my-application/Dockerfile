@@ -15,4 +15,6 @@ ENV \
         NODE_ENV=production \
         PORT=${PORT}
 
+EXPOSE ${PORT}
+
 CMD [ "npm", "run", "start" ]
