@@ -22,6 +22,11 @@ resource "aws_elastic_beanstalk_environment" "default" {
 		namespace = "aws:autoscaling:asg"
 		value = "1"
 	}
+	setting {
+		name = "IamInstanceProfile"
+		namespace = "aws:autoscaling:launchconfiguration"
+		value = "primary-admin"
+	}
 
 	// Environmental settings
 	dynamic "setting" {
