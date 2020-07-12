@@ -2,8 +2,8 @@ name: services_my-application_CI
 
 on:
   push:
-    # paths:
-    #   - services/my-application/*
+    paths:
+      - services/my-application/*
 
 defaults:
   run:
