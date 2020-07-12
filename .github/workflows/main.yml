@@ -2,8 +2,8 @@ name: services_my-application_CI
 
 on:
   push:
-    paths:
-      - services/my-application/*
+    # paths:
+    #   - services/my-application/*
 
 defaults:
   run:
@@ -13,10 +13,10 @@ defaults:
 jobs:
   package:
     env:
-      IMAGENAME: services-my-application
-      IMAGEREGISTRY: hub.docker.com:443
-      PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-      USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      IMAGE_NAME: services-my-application
+      REGISTROY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      REGISTROY_URL: docker.io
+      REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     if: endsWith(github.ref, 'master') == true
     runs-on: ubuntu-20.04
     outputs:
@@ -26,9 +26,9 @@ jobs:
       - run: echo "::set-env name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')"
       - run: echo "::set-output name=VERSION::${{ env.VERSION }}"
         id: output_version
-      - run: echo "${PASSWORD}" | docker login --username ${USERNAME} --password-stdin
+      - run: echo "${REGISTROY_PASSWORD}" | docker login --username ${REGISTRY_USERNAME} --password-stdin
       - run: docker build . --file Dockerfile --tag temp-image
-      - run: docker tag temp-image ${IMAGEREGISTRY}/${USERNAME}/${IMAGENAME}:${VERSION}
-      - run: docker tag temp-image ${IMAGEREGISTRY}/${USERNAME}/${IMAGENAME}:latest
-      - run: docker push ${IMAGEREGISTRY}/${USERNAME}/${IMAGENAME}:${VERSION}
-      - run: docker push ${IMAGEREGISTRY}/${USERNAME}/${IMAGENAME}:latest
+      - run: docker tag temp-image ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:${VERSION}
+      - run: docker tag temp-image ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:latest
+      - run: docker push ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:${VERSION}
+      - run: docker push ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:latest
