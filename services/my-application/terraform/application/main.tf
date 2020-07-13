@@ -50,7 +50,7 @@ resource "aws_elastic_beanstalk_application_version" "default" {
 	application = aws_elastic_beanstalk_application.default.name
 	bucket = aws_s3_bucket.default.id
 	key = "Dockerrun.aws.json"
-	name = "2020-07-12T20-51-27"
+	name = replace("${var.image}", "/", "\\")
 }
 
 // Create Application
