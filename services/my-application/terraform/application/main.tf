@@ -38,7 +38,7 @@ resource "aws_s3_bucket_object" "default" {
 	content = jsonencode({
 		"AWSEBDockerrunVersion" = "1"
 		"Image" = {
-			"Name" = "1mill/services-my-application:2020-07-12T20-51-27"
+			"Name" = var.image
 		}
 		"Ports" = [
 			{ "ContainerPort" = "8080" }

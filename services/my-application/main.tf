@@ -12,4 +12,5 @@ module "production" {
 	environment = [
 		{ key = "NODE_ENV", value = "production" }
 	]
+	image = "1mill/services-my-application:2020-07-12T20-51-27"
 }

@@ -7,3 +7,6 @@ variable "environment" {
 		})
 	)
 }
+variable "image" {
+	type = string
+}
