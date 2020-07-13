@@ -13,6 +13,3 @@ module "production" {
 		{ key = "NODE_ENV", value = "production" }
 	]
 }
-module "release" {
-	source = "./terraform/release"
-}
