@@ -29,12 +29,23 @@ resource "aws_elastic_beanstalk_application" "default" {
 	name = "terraform-beanstalk-docker-example"
 }
 
+// Create latest release
+resource "aws_s3_bucket" "default" {
+}
+resource "aws_elastic_beanstalk_application_version" "default" {
+	application = aws_elastic_beanstalk_application.default.name
+	bucket = aws_s3_bucket.default.id
+	key = "Dockerrun.aws.json"
+	name = "2020-07-12T20-51-27"
+}
+
 // Create Application
 resource "aws_elastic_beanstalk_environment" "default" {
 	application = aws_elastic_beanstalk_application.default.name
 	name = "production"
 	solution_stack_name = "64bit Amazon Linux 2 v3.0.3 running Docker"
 	tier = "WebServer"
+	version_label = aws_elastic_beanstalk_application_version.default.id
 
 	setting {
 		name = "InstanceTypes"
