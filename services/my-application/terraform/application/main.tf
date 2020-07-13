@@ -29,8 +29,22 @@ resource "aws_elastic_beanstalk_application" "default" {
 	name = "terraform-beanstalk-docker-example"
 }
 
-// Create latest release
+// Create release
 resource "aws_s3_bucket" "default" {
+}
+resource "aws_s3_bucket_object" "default" {
+	bucket = aws_s3_bucket.default.id
+	key = "testing.json"
+	content = jsonencode({
+		"AWSEBDockerrunVersion" = "1"
+		"Image" = {
+			"Name" = "1mill/services-my-application:2020-07-12T20-51-27"
+		}
+		"Ports" = [
+			{ "ContainerPort" = "8080" }
+		]
+	})
+	content_type = "application/json"
 }
 resource "aws_elastic_beanstalk_application_version" "default" {
 	application = aws_elastic_beanstalk_application.default.name
