@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "default" {
 }
 resource "aws_s3_bucket_object" "default" {
 	bucket = aws_s3_bucket.default.id
-	key = "testing.json"
+	key = "Dockerrun.aws.json"
 	content = jsonencode({
 		"AWSEBDockerrunVersion" = "1"
 		"Image" = {
