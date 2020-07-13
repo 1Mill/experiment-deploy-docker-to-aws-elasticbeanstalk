@@ -69,12 +69,12 @@ resource "aws_elastic_beanstalk_environment" "default" {
 	setting {
 		name = "MaxSize"
 		namespace = "aws:autoscaling:asg"
-		value = "2"
+		value = var.max
 	}
 	setting {
 		name = "MinSize"
 		namespace = "aws:autoscaling:asg"
-		value = "1"
+		value = var.min
 	}
 	setting {
 		name = "IamInstanceProfile"

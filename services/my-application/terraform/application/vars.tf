@@ -10,3 +10,11 @@ variable "environment" {
 variable "image" {
 	type = string
 }
+variable "max" {
+	default = 4
+	type = number
+}
+variable "min" {
+	default = 1
+	type = number
+}
