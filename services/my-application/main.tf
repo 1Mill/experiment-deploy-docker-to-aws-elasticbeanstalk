@@ -25,11 +25,14 @@ provider "aws" {
 	version = "~> 2.59"
 }
 
+variable "image" {
+	type = string
+}
 module "production" {
 	source = "./terraform/application"
 	environment = [
 		{ key = "NODE_ENV", value = "production" }
 	]
-	image = "1mill/services-my-application:2020-07-13T02-43-28"
+	image = var.image
 	max = 2
 }
