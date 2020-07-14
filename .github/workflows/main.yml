@@ -32,9 +32,6 @@ jobs:
       - run: echo ${TF_VAR_IMAGE}
 
   package:
-    env:
-      REGISTROY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-      REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     defaults:
       run:
         working-directory: ./services/my-application
@@ -47,7 +44,7 @@ jobs:
       - run: echo "::set-env name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')"
       - run: echo "::set-output name=VERSION::${{ env.VERSION }}"
         id: output_version
-      - run: echo "${REGISTROY_PASSWORD}" | docker login --username ${REGISTRY_USERNAME} --password-stdin
+      - run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - run: docker build . --file Dockerfile --tag temp-image
       - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
       - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:latest
