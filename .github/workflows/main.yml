@@ -8,15 +8,35 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ./services/my-application
+
+env:
+  DOCKER_IMAGE: docker.io/1mill/services-my-application
 
 jobs:
+  deploy-to-production:
+    container:
+      image: 1mill/terraform-sops:alpine-2020-07-05T19-24-29
+    defaults:
+      run:
+        working-directory: /app
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
+      TV_VAR_IMAGE: ${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}
+    if: endsWith(github.ref, 'master') == true
+    needs: [package]
+    runs-on: ubuntu-20.04
+    steps:
+      - run: echo ${TV_VAR_IMAGE}
+
   package:
     env:
-      IMAGE_NAME: services-my-application
       REGISTROY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-      REGISTROY_URL: docker.io
       REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+    defaults:
+      run:
+        working-directory: ./services/my-application
     if: endsWith(github.ref, 'master') == true
     runs-on: ubuntu-20.04
     outputs:
@@ -28,7 +48,7 @@ jobs:
         id: output_version
       - run: echo "${REGISTROY_PASSWORD}" | docker login --username ${REGISTRY_USERNAME} --password-stdin
       - run: docker build . --file Dockerfile --tag temp-image
-      - run: docker tag temp-image ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:${VERSION}
-      - run: docker tag temp-image ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:latest
-      - run: docker push ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:${VERSION}
-      - run: docker push ${REGISTROY_URL}/${REGISTRY_USERNAME}/${IMAGE_NAME}:latest
+      - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+      - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:latest
+      - run: docker push ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+      - run: docker push ${{ env.DOCKER_IMAGE }}:latest
