@@ -18,7 +18,7 @@ jobs:
       image: 1mill/terraform-sops:alpine-2020-07-05T19-24-29
     defaults:
       run:
-        working-directory: /app/services/my-application
+        working-directory: /app
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_DEFAULT_REGION: us-east-1
@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
-      - run: ls -a
+      - run: cd services/my-application && ls -a
       # - run: terraform init
       # - run: terraform apply -auto-approve
 
