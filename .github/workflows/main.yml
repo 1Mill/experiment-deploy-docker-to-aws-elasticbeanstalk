@@ -29,7 +29,7 @@ jobs:
       - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
       - run: terraform init
         working-directory: ./services/my-application
-      - run: terraform apply -auto-approve
+      - run: terraform apply -auto-approve -lock-timeout=600s
         working-directory: ./services/my-application
 
   package:
