@@ -26,7 +26,7 @@ resource "aws_iam_instance_profile" "default" {
 
 // Create environment
 resource "aws_elastic_beanstalk_application" "default" {
-	name = "${var.name}-${uuid()}"
+	name = uuid()
 }
 
 // Create release
@@ -56,7 +56,7 @@ resource "aws_elastic_beanstalk_application_version" "default" {
 // Create Application
 resource "aws_elastic_beanstalk_environment" "default" {
 	application = aws_elastic_beanstalk_application.default.name
-	name = "production"
+	name = var.name
 	solution_stack_name = "64bit Amazon Linux 2 v3.0.3 running Docker"
 	tier = var.type == "website" ? "WebServer" : "Worker"
 	version_label = aws_elastic_beanstalk_application_version.default.id
