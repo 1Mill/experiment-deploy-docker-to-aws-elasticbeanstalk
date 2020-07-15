@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    shell: bash
+    shell: sh
 
 env:
   DOCKER_IMAGE: docker.io/1mill/services-my-application
@@ -28,6 +28,7 @@ jobs:
     # needs: [package]
     runs-on: ubuntu-20.04
     steps:
+      - run: npm
       - uses: actions/checkout@v2
       # - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
       - run: ls -a
