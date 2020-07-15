@@ -26,7 +26,7 @@ resource "aws_iam_instance_profile" "default" {
 
 // Create environment
 resource "aws_elastic_beanstalk_application" "default" {
-	name = "terraform-beanstalk-docker-example"
+	name = "${var.name}-${uuid()}"
 }
 
 // Create release

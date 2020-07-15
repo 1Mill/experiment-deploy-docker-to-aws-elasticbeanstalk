@@ -34,5 +34,14 @@ module "production" {
 		{ key = "NODE_ENV", value = "production" }
 	]
 	image = var.IMAGE
+	name = "production-terraform-beanstalk-docker-example"
+}
+module "staging" {
+	source = "./terraform/application"
+	environment = [
+		{ key = "NODE_ENV", value = "production" }
+	]
+	image = var.IMAGE
 	max = 2
+	name = "staging-terraform-beanstalk-docker-example"
 }
