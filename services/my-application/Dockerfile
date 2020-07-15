@@ -11,9 +11,10 @@ COPY . .
 
 ARG PORT=8080
 ENV \
-        HOST=0.0.0.0 \
-        NODE_ENV=production \
-        PORT=${PORT}
+	MY_EXAMPLE_INJECTED_SECRET_KEY=${MY_EXAMPLE_INJECTED_SECRET_KEY} \
+	HOST=0.0.0.0 \
+	NODE_ENV=production \
+	PORT=${PORT}
 
 EXPOSE ${PORT}
 
