@@ -25,8 +25,11 @@ resource "aws_iam_instance_profile" "default" {
 }
 
 // Create environment
+resource "random_id" "default" {
+	byte_length = 40
+}
 resource "aws_elastic_beanstalk_application" "default" {
-	name = uuid()
+	name = random_id.default.b64_url
 }
 
 // Create release
