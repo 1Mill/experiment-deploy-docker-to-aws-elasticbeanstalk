@@ -25,7 +25,7 @@ provider "aws" {
 	version = "~> 2.59"
 }
 
-variable "image" {
+variable "IMAGE" {
 	type = string
 }
 module "production" {
@@ -33,6 +33,6 @@ module "production" {
 	environment = [
 		{ key = "NODE_ENV", value = "production" }
 	]
-	image = var.image
+	image = var.IMAGE
 	max = 2
 }
