@@ -21,3 +21,7 @@ variable "min" {
 variable "name" {
 	type = string
 }
+variable "type" {
+	default = ""
+	type = string
+}

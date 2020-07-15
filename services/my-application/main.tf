@@ -35,6 +35,7 @@ module "production" {
 	]
 	image = var.IMAGE
 	name = "production-terraform-beanstalk-docker-example"
+	type = "website"
 }
 module "staging" {
 	source = "./terraform/application"
@@ -44,4 +45,5 @@ module "staging" {
 	image = var.IMAGE
 	max = 2
 	name = "staging-terraform-beanstalk-docker-example"
+	type = "website"
 }
