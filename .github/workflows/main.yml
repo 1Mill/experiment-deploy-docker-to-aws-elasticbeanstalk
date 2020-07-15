@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:latest
+      - run: echo "::set-env name=TF_VAR_IMAGE::some-placeholder-image"
       - run: terraform init
         working-directory: ./services/my-application
       - run: terraform plan -lock-timeout=600s
