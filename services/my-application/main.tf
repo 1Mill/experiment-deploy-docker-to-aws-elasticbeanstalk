@@ -34,7 +34,7 @@ module "production" {
 		{ key = "NODE_ENV", value = "production" }
 	]
 	image = var.IMAGE
-	name = "production-terraform-beanstalk-docker-example"
+	name = "production-docker-terraform-aws"
 	type = "website"
 }
 module "staging" {
@@ -44,6 +44,6 @@ module "staging" {
 	]
 	image = var.IMAGE
 	max = 2
-	name = "staging-terraform-beanstalk-docker-example"
+	name = "staging-docker-terraform-aws"
 	type = "website"
 }
