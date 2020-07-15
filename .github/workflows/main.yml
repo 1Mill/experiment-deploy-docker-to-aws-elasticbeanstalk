@@ -16,9 +16,9 @@ jobs:
   deploy-to-production:
     container:
       image: 1mill/terraform-sops:alpine-2020-07-05T19-24-29
-    defaults:
-      run:
-        working-directory: /app
+    # defaults:
+    #   run:
+    #     working-directory: /app
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_DEFAULT_REGION: us-east-1
@@ -29,8 +29,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-        with:
-          path: app
       # - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
       - run: ls -a
       # - run: terraform init
