@@ -25,31 +25,33 @@ jobs:
       AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     if: endsWith(github.ref, 'master') == true
-    needs: [package]
+    # needs: [package]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
+        with:
+          path: app
+      # - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
       - run: ls -a
       # - run: terraform init
       # - run: terraform apply -auto-approve
 
-  package:
-    defaults:
-      run:
-        working-directory: ./services/my-application
-    if: endsWith(github.ref, 'master') == true
-    runs-on: ubuntu-20.04
-    outputs:
-      version: ${{ steps.output_version.outputs.VERSION }}
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo "::set-env name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')"
-      - run: echo "::set-output name=VERSION::${{ env.VERSION }}"
-        id: output_version
-      - run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-      - run: docker build . --file Dockerfile --tag temp-image
-      - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
-      - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:latest
-      - run: docker push ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
-      - run: docker push ${{ env.DOCKER_IMAGE }}:latest
+  # package:
+  #   defaults:
+  #     run:
+  #       working-directory: ./services/my-application
+  #   if: endsWith(github.ref, 'master') == true
+  #   runs-on: ubuntu-20.04
+  #   outputs:
+  #     version: ${{ steps.output_version.outputs.VERSION }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: echo "::set-env name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')"
+  #     - run: echo "::set-output name=VERSION::${{ env.VERSION }}"
+  #       id: output_version
+  #     - run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+  #     - run: docker build . --file Dockerfile --tag temp-image
+  #     - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+  #     - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:latest
+  #     - run: docker push ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+  #     - run: docker push ${{ env.DOCKER_IMAGE }}:latest
