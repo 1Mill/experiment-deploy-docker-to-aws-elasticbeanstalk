@@ -1,9 +1,13 @@
 name: services_my-application_CI
 
 on:
+  pull_request:
   push:
-    # paths:
-    #   - services/my-application/*
+    branches:
+      - develompent
+      - master
+    paths:
+      - services/my-application/*
 
 defaults:
   run:
