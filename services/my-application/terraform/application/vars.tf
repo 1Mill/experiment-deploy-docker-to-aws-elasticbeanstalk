@@ -20,8 +20,18 @@ variable "min" {
 }
 variable "name" {
 	type = string
+
+	validation {
+		condition = 5 <= length(var.name) && length(var.name) <= 40
+		error_message = "Variable 'name' must between 5 - 40 characters in length."
+	}
 }
 variable "type" {
 	default = ""
 	type = string
+
+	validation {
+		condition = var.type == "website" || var.type == "worker"
+		error_message = "Variable 'type' can only be 'website' or 'worker'."
+	}
 }
