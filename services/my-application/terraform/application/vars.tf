@@ -18,3 +18,6 @@ variable "min" {
 	default = 1
 	type = number
 }
+variable "name" {
+	type = string
+}

@@ -1,9 +1,13 @@
 name: services_my-application_CI
 
 on:
+  pull_request:
   push:
-    # paths:
-    #   - services/my-application/*
+    branches:
+      - develompent
+      - master
+    paths:
+      - services/my-application/*
 
 defaults:
   run:
@@ -29,7 +33,7 @@ jobs:
       - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
       - run: terraform init
         working-directory: ./services/my-application
-      - run: terraform apply -auto-approve
+      - run: terraform apply -auto-approve -lock-timeout=600s
         working-directory: ./services/my-application
 
   package:
@@ -37,9 +41,10 @@ jobs:
       run:
         working-directory: ./services/my-application
     if: endsWith(github.ref, 'master') == true
-    runs-on: ubuntu-20.04
+    needs: [test-code, test-deploy]
     outputs:
       version: ${{ steps.output_version.outputs.VERSION }}
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - run: echo "::set-env name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')"
@@ -51,3 +56,32 @@ jobs:
       - run: docker tag temp-image ${{ env.DOCKER_IMAGE }}:latest
       - run: docker push ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
       - run: docker push ${{ env.DOCKER_IMAGE }}:latest
+
+  test-code:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - uses: actions/checkout@v2
+      - run: npm install
+        working-directory: ./services/my-application
+      - run: npm run test
+        working-directory: ./services/my-application
+
+  test-deploy:
+    container:
+      image: 1mill/terraform-sops:alpine-2020-07-05T19-24-29
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "::set-env name=TF_VAR_IMAGE::some-placeholder-image"
+      - run: terraform init
+        working-directory: ./services/my-application
+      - run: terraform plan -lock-timeout=600s
+        working-directory: ./services/my-application
