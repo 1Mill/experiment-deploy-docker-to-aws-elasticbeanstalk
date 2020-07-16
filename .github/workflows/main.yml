@@ -10,9 +10,9 @@ on:
     # paths:
     #   - services/my-application/*
 
-defaults:
-  run:
-    shell: sh
+# defaults:
+#   run:
+#     shell: sh
 
 env:
   DOCKER_IMAGE: docker.io/1mill/services-my-application
