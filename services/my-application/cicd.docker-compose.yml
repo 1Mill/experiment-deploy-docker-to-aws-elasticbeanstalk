@@ -20,7 +20,7 @@ services:
       - ./:/app
 
   test-deploy:
-    command: sh -c "terraform init && terraform -lock-timeout=600s"
+    command: sh -c "terraform init && terraform plan -lock-timeout=600s"
     image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
