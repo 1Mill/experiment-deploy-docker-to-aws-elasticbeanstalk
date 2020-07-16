@@ -80,8 +80,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - run: cat /etc/*-release
-      # - uses: actions/checkout@v2
-      # - run: echo "::set-env name=TF_VAR_IMAGE::some-placeholder-image"
+      - uses: actions/checkout@v2
+      - run: echo "::set-env name=TF_VAR_IMAGE::some-placeholder-image"
+      - run: cat /etc/*-release
       # - run: terraform init
       #   working-directory: ./services/my-application
       # - run: terraform plan -lock-timeout=600s
