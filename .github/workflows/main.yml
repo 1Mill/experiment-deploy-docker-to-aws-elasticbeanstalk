@@ -66,5 +66,6 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2
+      - run: echo "::set-env name=TF_VAR_IMAGE::some-placeholder-value"
       - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
         working-directory: ./services/my-application
