@@ -19,7 +19,7 @@ env:
 jobs:
   deploy-to-production:
     container:
-      image: 1mill/terraform-sops:alpine-2020-07-05T19-24-29
+      image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_DEFAULT_REGION: us-east-1
@@ -71,7 +71,7 @@ jobs:
 
   test-deploy:
     container:
-      image: 1mill/terraform-sops:alpine-2020-07-05T19-24-29
+      image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_DEFAULT_REGION: us-east-1
