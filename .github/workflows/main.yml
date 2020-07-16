@@ -71,13 +71,13 @@ jobs:
         working-directory: ./services/my-application
 
   test-deploy:
-    # container:
-    #   image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    container:
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_DEFAULT_REGION: us-east-1
+        AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
