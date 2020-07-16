@@ -7,8 +7,8 @@ on:
   push:
     branches:
       - master
-    # paths:
-    #   - services/my-application/*
+    paths:
+      - services/my-application/*
 
 env:
   DOCKER_IMAGE: docker.io/1mill/services-my-application
