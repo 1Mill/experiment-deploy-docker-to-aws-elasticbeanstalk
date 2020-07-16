@@ -2,12 +2,13 @@ name: services_my-application_CI
 
 on:
   pull_request:
-  push:
-    branches:
-      - develompent
-      - master
     paths:
       - services/my-application/*
+  push:
+    branches:
+      - master
+    # paths:
+    #   - services/my-application/*
 
 defaults:
   run:
@@ -70,8 +71,8 @@ jobs:
         working-directory: ./services/my-application
 
   test-deploy:
-    container:
-      image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
+    # container:
+    #   image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_DEFAULT_REGION: us-east-1
