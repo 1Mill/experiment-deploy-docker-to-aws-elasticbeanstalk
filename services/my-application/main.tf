@@ -40,7 +40,7 @@ module "production" {
 	]
 	image = var.IMAGE
 	name = "production-docker-terraform-aws"
-	type = "website2"
+	type = "website"
 }
 module "staging" {
 	source = "./terraform/application"
