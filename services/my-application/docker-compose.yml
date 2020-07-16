@@ -4,6 +4,7 @@ services:
   app:
     build: ./
     environment:
+      MY_EXAMPLE_INJECTED_SECRET_KEY: some-placeholder-value
       NODE_ENV: development
     ports:
       - 8080:8080

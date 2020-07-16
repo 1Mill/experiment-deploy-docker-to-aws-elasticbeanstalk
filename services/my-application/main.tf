@@ -16,6 +16,11 @@ terraform {
 	}
 }
 
+module "secrets" {
+	source = "./terraform/secrets"
+	file_path = "./secrets.sops.json"
+}
+
 provider "aws" {
 	// Environment AWS_ACCESS_KEY_ID
 	// Environment AWS_PROFILE
@@ -24,24 +29,27 @@ provider "aws" {
 	region="us-east-1"
 	version = "~> 2.59"
 }
-
 variable "IMAGE" {
 	type = string
 }
 module "production" {
 	source = "./terraform/application"
 	environment = [
+		{ key = "MY_EXAMPLE_INJECTED_SECRET_KEY", value = module.secrets.json.MY_EXAMPLE_INJECTED_SECRET_KEY.production },
 		{ key = "NODE_ENV", value = "production" }
 	]
 	image = var.IMAGE
-	name = "production-terraform-beanstalk-docker-example"
+	name = "production-docker-terraform-aws"
+	type = "website"
 }
 module "staging" {
 	source = "./terraform/application"
 	environment = [
+		{ key = "MY_EXAMPLE_INJECTED_SECRET_KEY", value = module.secrets.json.MY_EXAMPLE_INJECTED_SECRET_KEY.staging },
 		{ key = "NODE_ENV", value = "production" }
 	]
 	image = var.IMAGE
 	max = 2
-	name = "staging-terraform-beanstalk-docker-example"
+	name = "staging-docker-terraform-aws"
+	type = "website"
 }
