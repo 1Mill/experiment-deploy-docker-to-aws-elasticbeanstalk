@@ -86,6 +86,8 @@ jobs:
       - run: ls -a
       - run: ls -a
         working-directory: ./services/my-application
+      - run: ls -a
+        working-directory: ~/.terraform.d/plugins/linux_386
       # - run: terraform init
       #   working-directory: ./services/my-application
       # - run: terraform plan -lock-timeout=600s
