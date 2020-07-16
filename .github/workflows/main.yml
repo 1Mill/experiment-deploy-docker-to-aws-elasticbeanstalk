@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo "::set-env name=TF_VAR_IMAGE::${{ env.DOCKER_IMAGE }}:${{ needs.package.outputs.version }}"
-      - run: docker-compose -f cicd.docker-compose.yml up --build deploy
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from deploy --build deploy
         working-directory: ./services/my-application
 
   package:
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: docker-compose -f cicd.docker-compose.yml up --build test-code
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
         working-directory: ./services/my-application
 
   test-deploy:
@@ -66,5 +66,5 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2
-      - run: docker-compose -f cicd.docker-compose.yml up --build test-deploy
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
         working-directory: ./services/my-application
