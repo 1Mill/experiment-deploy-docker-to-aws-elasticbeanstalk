@@ -10,7 +10,7 @@ terraform {
 		bucket = "experiment-terraform-state"
 		dynamodb_table = "experiment-terraform-state-locks"
 		encrypt = true
-		key = "global/s3/terraform.tfstate"
+		key = "/services/my-application/terraform.tfstate"
 		profile = "terraform"
 		region = "us-east-1"
 	}
