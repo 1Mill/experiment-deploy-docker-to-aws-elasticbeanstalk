@@ -33,7 +33,7 @@ variable "IMAGE" {
 	type = string
 }
 module "production" {
-	source = "./terraform/application"
+	source = "github.com/1Mill/terraform-modules.git//aws/elasticbeanstalk/docker"
 	environment = [
 		{ key = "MY_EXAMPLE_INJECTED_SECRET_KEY", value = module.secrets.json.MY_EXAMPLE_INJECTED_SECRET_KEY.production },
 		{ key = "NODE_ENV", value = "production" }
@@ -43,7 +43,7 @@ module "production" {
 	type = "website"
 }
 module "staging" {
-	source = "./terraform/application"
+	source = "github.com/1Mill/terraform-modules.git//aws/elasticbeanstalk/docker"
 	environment = [
 		{ key = "MY_EXAMPLE_INJECTED_SECRET_KEY", value = module.secrets.json.MY_EXAMPLE_INJECTED_SECRET_KEY.staging },
 		{ key = "NODE_ENV", value = "production" }
