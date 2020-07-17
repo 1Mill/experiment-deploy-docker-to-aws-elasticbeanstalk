@@ -17,7 +17,7 @@ terraform {
 }
 
 module "secrets" {
-	source = "./terraform/secrets"
+	source = "github.com/1Mill/terraform-modules.git//sops"
 	file_path = "./secrets.sops.json"
 }
 
