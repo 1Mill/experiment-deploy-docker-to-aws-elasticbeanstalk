@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   deploy:
-    command: sh -c "terraform init && terraform apply -auto-approve -lock-timeout=600s"
-    image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
+    command: sh -c "terraform init && terraform apply -auto-approve -lock-timeout=1200s"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
@@ -20,8 +20,8 @@ services:
       - ./:/app
 
   test-deploy:
-    command: sh -c "terraform init && terraform plan -lock-timeout=600s"
-    image: 1mill/terraform-sops:alpine-2020-07-16T02-22-23
+    command: sh -c "terraform init && terraform plan -lock-timeout=1200s"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
