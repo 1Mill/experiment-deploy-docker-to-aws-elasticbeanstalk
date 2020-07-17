@@ -1,5 +1,6 @@
 // Create IAM role to manage elasticbeanstalk
 resource "aws_iam_role_policy_attachment" "default" {
+	// TODO: Restrict this policy
 	policy_arn  = "arn:aws:iam::aws:policy/AdministratorAccess"
 	role = aws_iam_role.default.name
 }
