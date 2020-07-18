@@ -8,7 +8,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          directories=$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
-          for i in "${directories[@]}"; do
+          arr=$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
+          echo $arr
+          for i in "${arr[@]}"; do
             echo $i directory
           done
+
+  try-market-action:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: technote-space/get-diff-action@v2
+        id: git_diff
+        with:
+          DIFF_FILTER: '*'
+          # PREFIX_FILTER: services/
+          SUFFIX_FILTER: '.txt'
+      - run: echo ${{ steps.git_diff.outputs.diff }}
+        if: steps.git_diff.outputs.diff
+
