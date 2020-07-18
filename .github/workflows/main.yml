@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo "::set-env name=TEMP_VAR::\"echo $(git diff --dirstat=files,0 ${{ github.event.before }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')\""
+      - run: echo ::set-env name=TEMP_VAR::$(git diff --dirstat=files,0 ${{ github.event.before }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
       - run: echo $TEMP_VAR
       - run: echo ${{ env.TEMP_VAR }}
 
@@ -21,9 +21,10 @@ jobs:
           PREFIX_FILTER: level-1/
           SUFFIX_FILTER: '.txt'
       - run: |
-          files=${{ steps.git_diff.outputs.diff }}
-          for i in "${files[@]}"; do
-            echo Something was found
-          end
+          array=${{ steps.git_diff.outputs.diff }}
+          for i in "${array[@]}"
+          do
+            echo $i
+          done
         if: steps.git_diff.outputs.diff
 
