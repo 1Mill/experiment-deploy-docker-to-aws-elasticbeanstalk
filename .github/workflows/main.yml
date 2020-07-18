@@ -3,35 +3,24 @@ name: CI/CD
 on: [pull_request, push]
 
 jobs:
-  get-commit-diffs:
+  services:
     runs-on: ubuntu-20.04
+    outputs:
+      services: ${{ steps.output_services.outputs.services }}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      - run: echo ::set-env name=SERVICES::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | xargs)
-      - run: echo ${{ env.SERVICES }}
-      - run: |
-          echo ${{ env.SERVICES }}
-          for s in ${{ env.SERVICES }}; do
-            echo $s changed
-          done
-        shell: bash
+      - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | xargs)
+        id: output_services
 
-  try-market-action:
+  test:
+    needs: [get-diff]
+    strategy:
+      matrix:
+        services: ${{ needs.services.outputs.services }}
+      fail-fast: true
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: technote-space/get-diff-action@v2
-        id: git_diff
-        with:
-          PREFIX_FILTER: level-1/
-          SUFFIX_FILTER: '.txt'
-      - run: |
-          array=(${{ steps.git_diff.outputs.diff }})
-          for i in "${array[@]}"
-          do
-            echo $i
-          done
-        if: steps.git_diff.outputs.diff
+      - run: echo ${{ needs.services.outputs.services }}
 
