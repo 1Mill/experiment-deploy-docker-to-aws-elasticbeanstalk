@@ -7,5 +7,4 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: git diff --dirstat=files,0 HEAD~1
-      - run: git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+      - run: git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }}
