@@ -23,7 +23,7 @@ jobs:
       - run: |
           files=${{ steps.git_diff.outputs.diff }}
           for i in "${files[@]}"; do
-            echo ${i}
+            echo "${i}"
           end
         if: steps.git_diff.outputs.diff
 
