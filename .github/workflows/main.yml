@@ -8,11 +8,10 @@ jobs:
     outputs:
       services: ${{ steps.output_services.outputs.services }}
     steps:
-      - run: sudo apt-get upgrade && apt-get install --yes jq
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r 086c022 | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("level")))')
+      - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("level")))')
         id: output_services
 
   test:
