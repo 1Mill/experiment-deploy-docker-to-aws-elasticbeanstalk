@@ -8,7 +8,7 @@ jobs:
     outputs:
       services: ${{ steps.output_services.outputs.services }}
     steps:
-      - run: apt-get install --yes jq
+      - run: sudo apt-get upgrade && apt-get install --yes jq
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
