@@ -15,7 +15,7 @@ jobs:
         id: output_services
 
   test:
-    needs: [get-diff]
+    needs: [services]
     strategy:
       matrix:
         services: ${{ needs.services.outputs.services }}
