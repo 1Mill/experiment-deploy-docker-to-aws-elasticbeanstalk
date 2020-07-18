@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - run: echo ::set-env name=ANOTHER_TEMP_VAR::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)
+      - run: echo ${{ env.ANOTHER_TEMP_VAR }}
       - run: echo ::set-env name=TEMP_VAR::$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
       - run: echo $TEMP_VAR
       - run: echo ${{ env.TEMP_VAR }}
