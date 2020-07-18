@@ -6,4 +6,5 @@ jobs:
   get-commit-diffs:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v2
       - run: git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
