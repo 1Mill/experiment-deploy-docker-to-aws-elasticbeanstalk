@@ -7,10 +7,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          arr=$(git diff --dirstat=files,0 ${{ github.ref }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
-          echo ${arr}
-        shell: bash
+      - run: echo "::set-env name=TEMP_VAR::$(git diff --dirstat=files,0 ${{ github.ref }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')"
+      - run: echo $TEMP_VAR
 
   try-market-action:
     runs-on: ubuntu-20.04
