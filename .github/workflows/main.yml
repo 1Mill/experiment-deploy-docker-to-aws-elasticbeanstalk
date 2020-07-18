@@ -9,10 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           arr=$(git diff --dirstat=files,0 ${{ github.event.before }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
-          echo $arr
-          for i in "${arr[@]}"; do
-            echo $i directory
-          done
+          echo ${arr}
 
   try-market-action:
     runs-on: ubuntu-20.04
@@ -26,7 +23,7 @@ jobs:
       - run: |
           files=${{ steps.git_diff.outputs.diff }}
           for i in "${files[@]}"; do
-            echo ${i} file
+            echo ${i}
           end
         if: steps.git_diff.outputs.diff
 
