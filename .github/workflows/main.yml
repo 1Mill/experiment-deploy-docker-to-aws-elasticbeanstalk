@@ -7,8 +7,4 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }}
-      - if: always()
-        uses: ouzi-dev/commit-status-updater@v1.0.4
-        with:
-          status: "${{ job.status }}"
+      - run: echo $(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }})
