@@ -22,7 +22,7 @@ jobs:
         id: git_diff
         with:
           DIFF_FILTER: '*'
-          # PREFIX_FILTER: services/
+          PREFIX_FILTER: level-1/
           SUFFIX_FILTER: '.txt'
       - run: echo ${{ steps.git_diff.outputs.diff }}
         if: steps.git_diff.outputs.diff
