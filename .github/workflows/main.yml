@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          directories=$(git diff --dirstat=files,0 HEAD~1 | sed 's/^[ 0-9.]\+% //g')
+          directories=$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
           for directory in directories; do
             echo This is the $directory
           done
