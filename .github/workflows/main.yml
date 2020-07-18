@@ -10,6 +10,7 @@ jobs:
       - run: |
           arr=$(git diff --dirstat=files,0 ${{ github.event.before }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
           echo ${arr}
+        shell: bash
 
   try-market-action:
     runs-on: ubuntu-20.04
