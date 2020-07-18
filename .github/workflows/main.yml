@@ -24,7 +24,7 @@ jobs:
       - run: |
           files=${{ steps.git_diff.outputs.diff }}
           for i in "${files[@]}"; do
-            echo "${i}"
+            echo This is the file that was outputed: $i
           end
         if: steps.git_diff.outputs.diff
 
