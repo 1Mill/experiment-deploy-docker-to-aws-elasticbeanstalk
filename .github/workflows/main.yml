@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          arr=$(git diff --dirstat=files,0 ${{ github.event.before }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
+          arr=$(git diff --dirstat=files,0 ${{ github.ref }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
           echo ${arr}
         shell: bash
 
