@@ -20,8 +20,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - run: echo ${{ needs.services.outputs.services }}
+      - run: echo ${{ fromJson(needs.services.outputs.services) }}
     strategy:
       matrix:
-        services: ${{ needs.services.outputs.services }}
+        services: ${{ fromJson(needs.services.outputs.services) }}
       fail-fast: true
 
