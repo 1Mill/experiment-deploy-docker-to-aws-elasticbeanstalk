@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          arr=$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
+          arr=$(git diff --dirstat=files,0 ${{ github.event.before }}...${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
           echo $arr
           for i in "${arr[@]}"; do
             echo $i directory
@@ -23,6 +23,10 @@ jobs:
         with:
           PREFIX_FILTER: level-1/
           SUFFIX_FILTER: '.txt'
-      - run: echo ${{ steps.git_diff.outputs.diff }}
+      - run: |
+          files=${{ steps.git_diff.outputs.diff }}
+          for i in "${files[@]}"; do
+            echo ${i} file
+          end
         if: steps.git_diff.outputs.diff
 
