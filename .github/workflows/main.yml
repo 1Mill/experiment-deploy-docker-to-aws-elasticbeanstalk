@@ -7,9 +7,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo "::set-env name=TEMP_VAR::$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')"
-      - run: echo {{ env.TEMP_VAR }}
-
-      # - run: array=$(git diff --dirstat=files,0 ${{ github.event.before }} ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g')
-      # - run: echo $array
-      # - run: for i in $arr; do echo $i; done
+      - run: |
+          directories=$(git diff --dirstat=files,0 HEAD~1 | sed 's/^[ 0-9.]\+% //g')
+          for directory in directories; do
+            echo This is the $directory
+          done
