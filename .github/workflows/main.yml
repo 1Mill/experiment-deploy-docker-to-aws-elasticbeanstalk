@@ -36,6 +36,7 @@ jobs:
       - run: echo ${{ fromJson(env.services)[0] }}
       - run: echo ${{ fromJson(env.services)[0] == 0 }}
       - run: echo ${{ fromJson(env.services)[0] != 0 }}
+      - run: echo Trigger
 
   test-code:
     if: needs.setup.outputs.services[0]
