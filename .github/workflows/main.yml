@@ -30,7 +30,7 @@ jobs:
       - if: fromJson(env.services)[0] == 0
         name: Cancel this workflow?
         uses: andymckay/cancel-action@0.2
-      - run: echo ::set-output name=services::${{ env.services }}
+      - run: echo ::set-output name=services::${{ toJson(env.services) }}
         id: output_services
       - run: echo ::set-output name=version::$(date +'%Y-%m-%dT%H-%M-%S')
         id: output_version
