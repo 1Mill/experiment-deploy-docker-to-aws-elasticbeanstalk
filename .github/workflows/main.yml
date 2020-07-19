@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       services: ${{ steps.output_services.outputs.services }}
-      services_present: ${{ fromJson(steps.output_services.outputs.services)[0] != 0 }}
+      services_changed: ${{ fromJson(steps.output_services.outputs.services)[0] != 0 }}
       version: ${{ steps.output_version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
       - run: echo ${{ fromJson(env.services)[0] != 0 }}
 
   test-code:
-    if: needs.setup.outputs.services_present
+    if: needs.setup.outputs.services_changed != 0
     needs: [setup]
     runs-on: ubuntu-20.04
     steps:
