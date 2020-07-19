@@ -2,6 +2,10 @@ name: CI/CD
 
 on: [pull_request, push]
 
+defaults:
+  run:
+    shell: bash
+
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_DEFAULT_REGION: us-east-1
@@ -13,12 +17,15 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       services: ${{ steps.output_services.outputs.services }}
+      version: ${{ steps.output_version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
       - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
         id: output_services
+      - run: echo ::set-output name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')
+        id: output_version
 
   test-code:
     needs: [changed]
@@ -50,9 +57,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')
-      - run: echo $VERSION
-      - run: docker-compose -f cicd.docker-compose.yml push
+      - run: echo ::set-env name=VERSION::${{ needs.changed.outputs.version }}
+      - run: |
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          docker-compose -f cicd.docker-compose.yml build
+          docker-compose -f cicd.docker-compose.yml push
         working-directory: ${{ matrix.service }}
     strategy:
       fail-fast: true
