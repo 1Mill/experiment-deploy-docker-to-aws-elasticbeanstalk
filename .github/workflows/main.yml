@@ -32,21 +32,20 @@ jobs:
         id: output_version
       - run: echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
       - run: echo ${{ fromJson(env.services)[0] }}
-      - run: echo ${{ fromJson(env.services)[0] == 1 }} # is True
-      - run: echo ${{ fromJson(env.services)[0] == 0 }} # is false
+      - run: echo ${{ fromJson(env.services)[0] != 0 }}
 
-  # test-code:
-  #   if: needs.setup.outputs.services[0] != 0
-  #   needs: [setup]
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
-  #       working-directory: ${{ matrix.service }}
-  #   strategy:
-  #     fail-fast: true
-  #     matrix:
-  #       service: ${{ fromJson(needs.setup.outputs.services) }}
+  test-code:
+    if: fromJson(needs.setup.outputs.services)[0] != 0
+    needs: [setup]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
+        working-directory: ${{ matrix.service }}
+    strategy:
+      fail-fast: true
+      matrix:
+        service: ${{ fromJson(needs.setup.outputs.services) }}
 
   # test-deploy:
   #   if: needs.setup.outputs.services[0] != 0
