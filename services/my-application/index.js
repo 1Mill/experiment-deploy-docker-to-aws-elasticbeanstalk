@@ -7,7 +7,6 @@ server.get('/', (_request, response) => {
 		CI/CDelivery is a real thing!
 		<p>${process.env.MY_EXAMPLE_INJECTED_SECRET_KEY}</p>
 		This is a new message that should be in production!
-		sdfsdfsdfsdf
 	`);
 });
 server.listen(process.env.PORT, () => {
