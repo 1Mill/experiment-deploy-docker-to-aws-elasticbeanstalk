@@ -34,7 +34,8 @@ jobs:
       - run: echo ${{ env.services }}
       - run: echo ${{ fromJson(env.services) }}
       - run: echo ${{ fromJson(env.services)[0] }}
-      - run: echo ${{ fromJson(env.services)[0] == Null }}
+      - run: echo ${{ fromJson(env.services)[0] == 0 }}
+      - run: echo ${{ fromJson(env.services)[0] != 0 }}
 
   test-code:
     if: needs.setup.outputs.services[0]
