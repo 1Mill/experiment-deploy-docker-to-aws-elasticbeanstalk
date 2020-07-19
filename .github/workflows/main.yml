@@ -30,65 +30,65 @@ jobs:
         id: output_services
       - run: echo ::set-output name=version::$(date +'%Y-%m-%dT%H-%M-%S')
         id: output_version
-      - run: echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
-      - run: echo ${{ join(fromJson(env.service)) }}
-      - run: echo ${{ join(fromJson(env.service)) == 0 }}
-      - run: echo ${{ join(fromJson(env.service)) == 1 }}
+      - run: echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | xargs)
+      - run: echo ${{ env.service }}
+      - run: echo ${{ env.service == 0}}
+      - run: echo ${{ env.service  == 1}}
 
-  test-code:
-    if: needs.setup.outputs.services[0] != 0
-    needs: [setup]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
-        working-directory: ${{ matrix.service }}
-    strategy:
-      fail-fast: true
-      matrix:
-        service: ${{ fromJson(needs.setup.outputs.services) }}
+  # test-code:
+  #   if: needs.setup.outputs.services[0] != 0
+  #   needs: [setup]
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
+  #       working-directory: ${{ matrix.service }}
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       service: ${{ fromJson(needs.setup.outputs.services) }}
 
-  test-deploy:
-    if: needs.setup.outputs.services[0] != 0
-    needs: [setup]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
-      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
-        working-directory: ${{ matrix.service }}
-    strategy:
-      fail-fast: true
-      matrix:
-        service: ${{ fromJson(needs.setup.outputs.services) }}
+  # test-deploy:
+  #   if: needs.setup.outputs.services[0] != 0
+  #   needs: [setup]
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
+  #     - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
+  #       working-directory: ${{ matrix.service }}
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       service: ${{ fromJson(needs.setup.outputs.services) }}
 
-  package:
-    if: (endsWith(github.ref, 'master') == true) && (fromJson(needs.setup.outputs.services)[0] != 0)
-    needs: [setup, test-code, test-deploy]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
-      - run: |
-          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker-compose -f cicd.docker-compose.yml build
-          docker-compose -f cicd.docker-compose.yml push
-        working-directory: ${{ matrix.service }}
-    strategy:
-      fail-fast: true
-      matrix:
-        service: ${{ fromJson(needs.setup.outputs.services) }}
+  # package:
+  #   if: (endsWith(github.ref, 'master') == true) && (fromJson(needs.setup.outputs.services)[0] != 0)
+  #   needs: [setup, test-code, test-deploy]
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
+  #     - run: |
+  #         echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+  #         docker-compose -f cicd.docker-compose.yml build
+  #         docker-compose -f cicd.docker-compose.yml push
+  #       working-directory: ${{ matrix.service }}
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       service: ${{ fromJson(needs.setup.outputs.services) }}
 
-  deploy:
-    if: (endsWith(github.ref, 'master') == true) && (fromJson(needs.setup.outputs.services)[0] != 0)
-    needs: [setup, package]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
-      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from deploy --build deploy
-        working-directory: ${{ matrix.service }}
-    strategy:
-      fail-fast: true
-      matrix:
-        service: ${{ fromJson(needs.setup.outputs.services) }}
+  # deploy:
+  #   if: (endsWith(github.ref, 'master') == true) && (fromJson(needs.setup.outputs.services)[0] != 0)
+  #   needs: [setup, package]
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
+  #     - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from deploy --build deploy
+  #       working-directory: ${{ matrix.service }}
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       service: ${{ fromJson(needs.setup.outputs.services) }}
