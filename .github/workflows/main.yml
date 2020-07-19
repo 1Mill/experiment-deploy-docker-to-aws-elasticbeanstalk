@@ -31,9 +31,9 @@ jobs:
       - run: echo ::set-output name=version::$(date +'%Y-%m-%dT%H-%M-%S')
         id: output_version
       - run: echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
-      - run: echo ${{ join(env.service) }}
-      - run: echo ${{ join(env.service) == 0 }}
-      - run: echo ${{ join(env.service) == 1 }}
+      - run: echo ${{ join(fromJson(env.service)) }}
+      - run: echo ${{ join(fromJson(env.service)) == 0 }}
+      - run: echo ${{ join(fromJson(env.service)) == 1 }}
 
   test-code:
     if: needs.setup.outputs.services[0] != 0
