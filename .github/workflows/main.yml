@@ -32,6 +32,10 @@ jobs:
         id: output_version
       - run: echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
       - run: echo ${{ env.services }}
+      - run: echo ${{ env.services[0] }}
+      - run: echo ${{ env.services[0] == 0}}
+      - run: echo ${{ env.services[0] != 0}}
+      - run: echo ---
       - run: echo ${{ fromJson(env.services) }}
       - run: echo ${{ fromJson(env.services)[0] }}
       - run: echo ${{ fromJson(env.services)[0] == 0 }}
@@ -39,7 +43,7 @@ jobs:
       - run: echo Trigger
 
   test-code:
-    if: fromJson(needs.setup.outputs.services)[0] != 0
+    if: (fromJson(needs.setup.outputs.services)[0] != 0)
     needs: [setup]
     runs-on: ubuntu-20.04
     steps:
@@ -52,7 +56,7 @@ jobs:
         service: ${{ fromJson(needs.setup.outputs.services) }}
 
   test-deploy:
-    if: fromJson(needs.setup.outputs.services)[0] != 0
+    if: (fromJson(needs.setup.outputs.services)[0] != 0)
     needs: [setup]
     runs-on: ubuntu-20.04
     steps:
