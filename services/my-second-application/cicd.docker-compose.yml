@@ -33,4 +33,4 @@ services:
 
   package:
     build: .
-    image: docker.io/1mill/my-second-application:${VERSION}
+    image: docker.io/1mill/services-my-second-application:${VERSION}
