@@ -30,3 +30,7 @@ services:
       TF_VAR_IMAGE: ${TF_VAR_IMAGE}
     volumes:
       - ./:/app
+
+  package:
+    build: .
+    image: docker.io/1mill/my-second-application:${VERSION}
