@@ -30,8 +30,8 @@ jobs:
         id: output_services
       - run: echo ::set-output name=version::$(date +'%Y-%m-%dT%H-%M-%S')
         id: output_version
-      - run: echo ::set-env name=services::${{ fromJson($(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g'  | jq --raw-input --slurp 'split("\n")')) }}
-      - run: echo ${{ fromJson(env.services)[0] }}
+      - run: echo ::set-env name=temp::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g'  | jq --raw-input --slurp 'split("\n")')
+      - run: echo ::set-env name=services::${{ fromJson(env.temp) }}
       - run: echo ${{ env.services[0] }}
 
   # test-code:
