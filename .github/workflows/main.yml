@@ -36,6 +36,7 @@ jobs:
       - run: echo ${{ env.services[0] }}
       - run: echo ${{ env.temp }}
       - run: echo ${{ fromJson(env.temp) }}
+      - run: echo ${{ fromJson(env.temp)[0] }}
 
   # test-code:
   #   if: needs.setup.outputs.services[0] != 0
