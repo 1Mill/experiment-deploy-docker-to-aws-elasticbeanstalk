@@ -36,7 +36,7 @@ jobs:
       - run: echo ${{ fromJson(env.services)[0] != 0 }}
 
   test-code:
-    if: needs.setup.outputs.services_changed != 0
+    if: fromJson(needs.setup.outputs.services)[0] != 0
     needs: [setup]
     runs-on: ubuntu-20.04
     steps:
