@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 2
       - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
         id: output_services
-      - run: echo ::set-output name=VERSION::$(date +'%Y-%m-%dT%H-%M-%S')
+      - run: echo ::set-output name=version::$(date +'%Y-%m-%dT%H-%M-%S')
         id: output_version
 
   test-code:
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo ::set-env name=TF_VAR_IMAGE::some-placeholder-value
+      - run: echo ::set-env name=VERSION::${{ needs.changed.outputs.version }}
       - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
         working-directory: ${{ matrix.service }}
     strategy:
