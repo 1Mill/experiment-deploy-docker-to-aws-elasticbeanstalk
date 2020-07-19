@@ -53,6 +53,7 @@ jobs:
         service: ${{ fromJson(needs.changed.outputs.services) }}
 
   package:
+    if: endsWith(github.ref, 'master') == true
     needs: [changed, test-code, test-deploy]
     runs-on: ubuntu-20.04
     steps:
@@ -68,4 +69,16 @@ jobs:
       matrix:
         service: ${{ fromJson(needs.changed.outputs.services) }}
 
-
+  deploy:
+    if: endsWith(github.ref, 'master') == true
+    needs: [changed, package]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo ::set-env name=VERSION::${{ needs.changed.outputs.version }}
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from deploy --build deploy
+        working-directory: ${{ matrix.service }}
+    strategy:
+      fail-fast: true
+      matrix:
+        service: ${{ fromJson(needs.changed.outputs.services) }}
