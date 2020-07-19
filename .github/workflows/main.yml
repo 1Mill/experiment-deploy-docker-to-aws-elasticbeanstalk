@@ -32,8 +32,12 @@ jobs:
         id: output_version
       - run: echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | xargs)
       - run: echo ${{ env.services }}
-      - run: echo ${{ env.services == 0}}
-      - run: echo ${{ env.services  == 1}}
+      - run: echo ${{ env.services[0] }}
+      - run: echo ${{ env.services[1] }}
+      - run: echo ${{ env.services[0] == 0 }}
+      - run: echo ${{ env.services[0] == 1 }}
+      - run: echo ${{ env.services[1] == 0 }}
+      - run: echo ${{ env.services[1] == 1 }}
 
   # test-code:
   #   if: needs.setup.outputs.services[0] != 0
