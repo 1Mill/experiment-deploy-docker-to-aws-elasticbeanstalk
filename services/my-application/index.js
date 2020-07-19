@@ -6,8 +6,7 @@ server.get('/', (_request, response) => {
 		<h1>Hello world from a PR request!</h1>
 		CI/CDelivery is a real thing!
 		<p>${process.env.MY_EXAMPLE_INJECTED_SECRET_KEY}</p>
-		This is a new message that should be in production!
-		sdfsdfsdfsdf
+		This is a new new message that should be in production!
 	`);
 });
 server.listen(process.env.PORT, () => {
