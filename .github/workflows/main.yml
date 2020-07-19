@@ -59,7 +59,7 @@ jobs:
         service: ${{ fromJson(needs.setup.outputs.services) }}
 
   package:
-    if: endsWith(github.ref, 'master') == true && ${{ fromJson(needs.setup.outputs.services)[0] }}
+    if: endsWith(github.ref, 'master') == true && fromJson(needs.setup.outputs.services)[0]
     needs: [setup, test-code, test-deploy]
     runs-on: ubuntu-20.04
     steps:
@@ -76,7 +76,7 @@ jobs:
         service: ${{ fromJson(needs.setup.outputs.services) }}
 
   deploy:
-    if: endsWith(github.ref, 'master') == true && endsWith(github.ref, 'master') == true || ${{ fromJson(needs.setup.outputs.services)[0] }}
+    if: endsWith(github.ref, 'master') == true && fromJson(needs.setup.outputs.services)[0]
     needs: [setup, package]
     runs-on: ubuntu-20.04
     steps:
