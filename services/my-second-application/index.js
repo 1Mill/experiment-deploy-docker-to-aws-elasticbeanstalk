@@ -4,7 +4,6 @@ const server = express();
 server.get('/', (_request, response) => {
 	response.send(`
 		<h1>Hello world from my-second-application!!</h1>
-		<p>trigger</p>
 	`);
 });
 server.listen(process.env.PORT, () => {
