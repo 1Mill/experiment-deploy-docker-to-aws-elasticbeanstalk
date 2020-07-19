@@ -3,7 +3,7 @@ name: CI/CD
 on: [pull_request, push]
 
 jobs:
-  services:
+  changed:
     runs-on: ubuntu-20.04
     outputs:
       services: ${{ steps.output_services.outputs.services }}
@@ -11,18 +11,18 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("level")))')
+      - run: echo ::set-output name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("services")))')
         id: output_services
-      - run: echo $(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} | sed 's/^[ 0-9.]\+% //g' | jq --raw-input --slurp 'split("\n")' | jq -c 'map(select(. | contains("level")))')
 
-  test:
-    needs: [services]
+  test-code:
+    needs: [changed]
     runs-on: ubuntu-20.04
     steps:
-      - run: echo ${{ needs.services.outputs.services }}
-      - run: echo ${{ fromJson(needs.services.outputs.services) }}
+      - uses: actions/checkout@v2
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
+        working-directory: ${{ matrix.service }}
     strategy:
       matrix:
-        services: ${{ fromJson(needs.services.outputs.services) }}
+        service: ${{ fromJson(needs.changed.outputs.services) }}
       fail-fast: true
 
