@@ -32,6 +32,7 @@ jobs:
         id: output_version
 
   test-code:
+    if: ${{ fromJson(needs.setup.outputs.services)[0] }}
     needs: [setup]
     runs-on: ubuntu-20.04
     steps:
@@ -44,6 +45,7 @@ jobs:
         service: ${{ fromJson(needs.setup.outputs.services) }}
 
   test-deploy:
+    if: ${{ fromJson(needs.setup.outputs.services)[0] }}
     needs: [setup]
     runs-on: ubuntu-20.04
     steps:
