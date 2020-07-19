@@ -2,6 +2,12 @@ name: CI/CD
 
 on: [pull_request, push]
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
   changed:
     runs-on: ubuntu-20.04
@@ -22,7 +28,21 @@ jobs:
       - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-code --build test-code
         working-directory: ${{ matrix.service }}
     strategy:
+      fail-fast: true
       matrix:
         service: ${{ fromJson(needs.changed.outputs.services) }}
+
+  test-deploy:
+    needs: [changed]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo ::set-env name=TF_VAR_IMAGE::some-placeholder-value
+      - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
+        working-directory: ${{ matrix.service }}
+    strategy:
       fail-fast: true
+      matrix:
+        service: ${{ fromJson(needs.changed.outputs.services) }}
+
 
