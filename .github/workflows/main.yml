@@ -13,7 +13,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  changed:
+  setup:
     runs-on: ubuntu-20.04
     outputs:
       services: ${{ steps.output_services.outputs.services }}
@@ -28,7 +28,7 @@ jobs:
         id: output_version
 
   test-code:
-    needs: [changed]
+    needs: [setup]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -37,28 +37,28 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        service: ${{ fromJson(needs.changed.outputs.services) }}
+        service: ${{ fromJson(needs.setup.outputs.services) }}
 
   test-deploy:
-    needs: [changed]
+    needs: [setup]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::${{ needs.changed.outputs.version }}
+      - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
       - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from test-deploy --build test-deploy
         working-directory: ${{ matrix.service }}
     strategy:
       fail-fast: true
       matrix:
-        service: ${{ fromJson(needs.changed.outputs.services) }}
+        service: ${{ fromJson(needs.setup.outputs.services) }}
 
   package:
     if: endsWith(github.ref, 'master') == true
-    needs: [changed, test-code, test-deploy]
+    needs: [setup, test-code, test-deploy]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::${{ needs.changed.outputs.version }}
+      - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
       - run: |
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           docker-compose -f cicd.docker-compose.yml build
@@ -67,18 +67,18 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        service: ${{ fromJson(needs.changed.outputs.services) }}
+        service: ${{ fromJson(needs.setup.outputs.services) }}
 
   deploy:
     if: endsWith(github.ref, 'master') == true
-    needs: [changed, package]
+    needs: [setup, package]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo ::set-env name=VERSION::${{ needs.changed.outputs.version }}
+      - run: echo ::set-env name=VERSION::${{ needs.setup.outputs.version }}
       - run: docker-compose -f cicd.docker-compose.yml up --exit-code-from deploy --build deploy
         working-directory: ${{ matrix.service }}
     strategy:
       fail-fast: true
       matrix:
-        service: ${{ fromJson(needs.changed.outputs.services) }}
+        service: ${{ fromJson(needs.setup.outputs.services) }}
