@@ -8,7 +8,7 @@ server.get('/', (_request, response) => {
 		<p>${process.env.MY_EXAMPLE_INJECTED_SECRET_KEY}</p>
 		Publish new message!
 		sdfsdffsdfsdfsdf
-		sdfsdfsf
+		sdfsdfsfsdfsdfd
 	`);
 });
 server.listen(process.env.PORT, () => {

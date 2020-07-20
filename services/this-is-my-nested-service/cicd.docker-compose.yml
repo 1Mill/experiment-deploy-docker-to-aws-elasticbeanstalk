@@ -2,4 +2,4 @@ version: '3.8'
 
 services:
   test-code:
-    command: sh -c "echo Hello world! aaaa"
+    command: sh -c "echo Hello world! aaaasfdsfsdfdsf"
