@@ -30,9 +30,9 @@ jobs:
           echo ::set-env name=services::$(git diff-tree --no-commit-id --dirstat=files,0 -r ${{ github.sha }} |
             sed 's/^[ 0-9.]\+% //g' |
             jq --raw-input --slurp 'split("\n")' |
-            jq -c 'map(select(. | contains("services/")))' |
-            jq -c 'map(select(. | string(FILTER(/[/]/g))'
+            jq '.[] | select( test("^services\/.*\/$"))'
           )
+      - run: echo ${{ env.services }}
       - if: fromJson(env.services)[0] == 0
         name: Cancel this workflow?
         uses: andymckay/cancel-action@0.2
