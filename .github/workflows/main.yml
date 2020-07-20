@@ -31,7 +31,7 @@ jobs:
             sed 's/^[ 0-9.]\+% //g' |
             jq --raw-input --slurp 'split("\n")' |
             jq -c 'map( select( . | contains("services/") ) )' |
-            jq -c 'map( select( . | test("^services\/.*\/$") ) )'
+            jq -c 'map( select( .[] | test("^services\/.*\/$") ) )'
           )
       - run: echo ${{ env.services }}
       - if: fromJson(env.services)[0] == 0
