@@ -66,6 +66,11 @@ resource "aws_elastic_beanstalk_environment" "default" {
 	version_label = aws_elastic_beanstalk_application_version.default.id
 
 	setting {
+		name = "IamInstanceProfile"
+		namespace = "aws:autoscaling:launchconfiguration"
+		value = aws_iam_instance_profile.default.name
+	}
+	setting {
 		name = "InstanceTypes"
 		namespace = "aws:ec2:instances"
 		value = "t3.micro"
@@ -81,9 +86,9 @@ resource "aws_elastic_beanstalk_environment" "default" {
 		value = var.min
 	}
 	setting {
-		name = "IamInstanceProfile"
-		namespace = "aws:autoscaling:launchconfiguration"
-		value = aws_iam_instance_profile.default.name
+		name = "RollingUpdateType"
+		namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+		value = "Immutable"
 	}
 
 	// Environmental settings
