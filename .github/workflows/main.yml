@@ -32,7 +32,6 @@ jobs:
             jq --raw-input --slurp 'split("\n")' |
             jq -c 'map( select( . | test("^services\/([^/]+)\/$", "ig") ) )'
           )
-      - run: echo ${{ env.services }}
       - if: fromJson(env.services)[0] == 0
         name: Cancel this workflow?
         uses: andymckay/cancel-action@0.2
