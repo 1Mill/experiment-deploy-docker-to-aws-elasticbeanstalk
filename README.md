@@ -17,9 +17,11 @@ To add a new service, just create a new (1) `services/my-new-thing/cicd.docker-c
 ## Production / Staging links
 
 <http://production-docker-terraform-aws.eba-u5tupby8.us-east-1.elasticbeanstalk.com>
+
 <http://staging-docker-terraform-aws.eba-ceu4nyf4.us-east-1.elasticbeanstalk.com>
 
 <http://production-my-second-application.eba-sayk8x2r.us-east-1.elasticbeanstalk.com>
+
 <http://staging-my-second-application.eba-q54myfcd.us-east-1.elasticbeanstalk.com>
 
 ## TODO
