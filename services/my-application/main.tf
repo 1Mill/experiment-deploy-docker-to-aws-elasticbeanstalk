@@ -17,7 +17,7 @@ terraform {
 }
 
 module "secrets" {
-	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//terraform-modules/sops"
+	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/sops"
 	file_path = "./secrets.sops.json"
 }
 
@@ -33,7 +33,7 @@ variable "IMAGE" {
 	type = string
 }
 module "production" {
-	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//terraform-modules/aws/elasticbeanstalk/docker"
+	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/elasticbeanstalk/docker"
 	environment = [
 		{ key = "MY_EXAMPLE_INJECTED_SECRET_KEY", value = module.secrets.json.MY_EXAMPLE_INJECTED_SECRET_KEY.production },
 		{ key = "NODE_ENV", value = "production" }
@@ -43,7 +43,7 @@ module "production" {
 	type = "website"
 }
 module "staging" {
-	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//terraform-modules/aws/elasticbeanstalk/docker"
+	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/elasticbeanstalk/docker"
 	environment = [
 		{ key = "MY_EXAMPLE_INJECTED_SECRET_KEY", value = module.secrets.json.MY_EXAMPLE_INJECTED_SECRET_KEY.staging },
 		{ key = "NODE_ENV", value = "production" }

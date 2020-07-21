@@ -28,7 +28,7 @@ variable "IMAGE" {
 	type = string
 }
 module "production" {
-	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//terraform-modules/aws/elasticbeanstalk/docker"
+	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/elasticbeanstalk/docker"
 	environment = [
 		{ key = "NODE_ENV", value = "production" }
 	]
@@ -37,7 +37,7 @@ module "production" {
 	type = "website"
 }
 module "staging" {
-	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//terraform-modules/aws/elasticbeanstalk/docker"
+	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/elasticbeanstalk/docker"
 	environment = [
 		{ key = "NODE_ENV", value = "production" }
 	]
