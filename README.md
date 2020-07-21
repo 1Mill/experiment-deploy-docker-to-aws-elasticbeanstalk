@@ -24,6 +24,24 @@ To add a new service, just create a new (1) `services/my-new-thing/cicd.docker-c
 
 <http://staging-my-second-application.eba-q54myfcd.us-east-1.elasticbeanstalk.com>
 
+## Why X?
+
+### SOPS
+
+`sops` lets you configure secret information (e.g. API keys) and read them in at run time.
+It is possible to do this at the application level, however, this application decodes and injects the secrets during the deploy runtime as environmental varaibles to (1) make local development easier and (2) make our applications "environmentally dumb".
+However, since `sops` are encrypted by default and are only accessible with user permissions to `AWS` in this application you can freely commit encrypted secrets to Git to codeify your infastructure.
+
+### Why Terraform
+
+`terraform` is an excellent tool for provisioning software for major providers. This affords your infastructure to be more like `cattle` (easy to start and teardown) instead of like `pets` (take a lot of time and engery to manage). Through creating your own modules, you can create your own abstractions to common cases for your application.
+In this application, AWS's ElasticBeanstalk is abstracted to run an arbitrary docker iamge: making spinning up new services incredibly easy.
+Additionally, `terraform` lets you dynamically connect dependent applications, making it easy to connect mulitple applications together (e.g. application A needs URL to application B) without any hard-coded values to your infastructure or internal to your application code (again "environmentally dumb")
+
+### Why Docker
+
+Docker is super easy to build, test, and publish your application code locally and in production.
+
 ## TODO
 
 * When a service is destroyed, run `terraform destroy -auto-approve` for that servce to destroy all infastructure
@@ -32,3 +50,4 @@ To add a new service, just create a new (1) `services/my-new-thing/cicd.docker-c
   * How do a bundle an S3 object to then import into a serverless function?
 * Add `development` branch support to test experimental features in production-like environment.
 * When pushing to master, during CI/CD fetch the last successful build commit (instead of the previous commit to the current commit) in order to deploy jobs into production that were successful but halted because the workflow itself stopped. This ensures production is (1) successful and (2) aligns with the code found in master.
+* Explore kuberneties infastructure / terraform integration for applications.
