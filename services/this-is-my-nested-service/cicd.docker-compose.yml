@@ -1,5 +1,0 @@
-version: '3.8'
-
-services:
-  test-code:
-    command: sh -c "echo Hello world! aaaaaaaaaaaaaaaaaaaaa"
