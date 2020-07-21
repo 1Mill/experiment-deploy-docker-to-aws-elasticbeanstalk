@@ -8,3 +8,4 @@ This example uses `terraform` and `docker-compose` to (1) push and then (2) run 
 ## TODO
 
 * When a service is destroyed, run `terraform destroy -auto-approve` for that servce to destroy all infastructure
+* Check for existing of `cicd.docker-compose.yml` to make CI/CD platform optional
