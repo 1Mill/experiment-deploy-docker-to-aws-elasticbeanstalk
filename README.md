@@ -2,8 +2,6 @@
 
 ## Overview
 
-## Overview
-
 This is an example of a using GitHub as a monorepo using GitHub actions for CI/CDelivery to deploy applications found in the `/services/my-unique-name/` namespace.
 The CI/CDelivery pipeline interfaces with the `cicd.docker-compose.yml` found in service folder, and has a common interface of
 
