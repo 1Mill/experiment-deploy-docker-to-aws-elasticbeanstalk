@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  deploy:
+    command: sh -c "echo Success!"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+
+  test-code:
+    command: sh -c "echo Success!"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+
+  test-deploy:
+    command: sh -c "echo Success!"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+
+  package:
+    command: sh -c "echo Success!"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
