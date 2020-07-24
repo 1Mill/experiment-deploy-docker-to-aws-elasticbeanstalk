@@ -9,7 +9,7 @@ resource "aws_subnet" "default" {
 	count = length(data.aws_availability_zones.default.names)
 
 	availability_zone = data.aws_availability_zones.default.names[count.index]
-	cidr_block = cidrsubnet(aws_vpc.default.cidr_block, 24, count.index)
+	cidr_block = cidrsubnet(aws_vpc.default.cidr_block, 16, count.index)
 	vpc_id = aws_vpc.default.id
 }
 // resource "aws_security_group" "default" {
