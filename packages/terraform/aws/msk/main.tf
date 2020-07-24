@@ -12,9 +12,9 @@ resource "aws_subnet" "default" {
 	cidr_block = cidrsubnet(aws_vpc.default.cidr_block, 8, count.index)
 	vpc_id = aws_vpc.default.id
 }
-// resource "aws_security_group" "default" {
-// 	vpc_id = aws_vpc.default.id
-// }
+resource "aws_security_group" "default" {
+	vpc_id = aws_vpc.default.id
+}
 // resource "aws_msk_cluster" "default" {
 // 	cluster_name = "delete-this-msk-cluster"
 // 	kafka_version = var.kafka_version
