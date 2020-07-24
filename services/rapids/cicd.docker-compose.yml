@@ -4,6 +4,8 @@ services:
   deploy:
     command: sh -c "echo Success!"
     image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+    volumes:
+      - ./:/app
 
   test-code:
     command: sh -c "echo Success!"
