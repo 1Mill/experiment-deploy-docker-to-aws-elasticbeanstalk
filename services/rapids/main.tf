@@ -21,7 +21,7 @@ provider "aws" {
 	// Environment AWS_SECRET_ACCESS_KEY
 
 	region="us-east-1"
-	version = "~> 2.59"
+	version = "~> 2.70"
 }
 module "production" {
 	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/msk"
