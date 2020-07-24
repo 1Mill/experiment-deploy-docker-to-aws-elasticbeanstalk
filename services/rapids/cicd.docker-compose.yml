@@ -4,6 +4,11 @@ services:
   deploy:
     command: sh -c "echo Success!"
     image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_PROFILE: ${AWS_PROFILE}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     volumes:
       - ./:/app
 
@@ -14,6 +19,13 @@ services:
   test-deploy:
     command: sh -c "echo Success!"
     image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_PROFILE: ${AWS_PROFILE}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ./:/app
 
   package:
     command: sh -c "echo Success!"
