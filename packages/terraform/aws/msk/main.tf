@@ -1,3 +1,15 @@
+resource "aws_msk_cluster" {
+	cluster_name = "delete-this-msk-cluster"
+	kafka_version = var.kafka_version
+	number_of_broker_nodes = 3
+
+	broker_node_group_info  {
+		client_subnets = ""
+		ebs_volume_size = "100"
+		instance_type = "kafka.t3.small"
+		security_groups = ""
+	}
+}
 resource "aws_msk_configuration" "default" {
 	kafka_versions = [var.kafka_version]
 	name = var.name
