@@ -15,7 +15,7 @@ resource "aws_subnet" "default" {
 resource "aws_security_group" "default" {
 	vpc_id = aws_vpc.default.id
 }
-resource "aws_msk_cluster" {
+resource "aws_msk_cluster" "default" {
 	cluster_name = "delete-this-msk-cluster"
 	kafka_version = var.kafka_version
 	number_of_broker_nodes = 1 * length(data.aws_availability_zones.default.names)
