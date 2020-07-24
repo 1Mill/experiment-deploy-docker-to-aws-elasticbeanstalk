@@ -3,15 +3,15 @@ data "aws_availability_zones" "default" {
 }
 
 resource "aws_vpc" "default" {
-	cidr_block = "192.168.0.0/22"
+	cidr_block = "172.16.0.1"
 }
-// resource "aws_subnet" "default" {
-// 	count = length(data.aws_availability_zones.default.names)
+resource "aws_subnet" "default" {
+	count = length(data.aws_availability_zones.default.names)
 
-// 	availability_zone = data.aws_availability_zones.default.names[count.index]
-// 	cidr_block = cidrsubnet(aws_vpc.default.cidr_block, 8, count.index)
-// 	vpc_id = aws_vpc.default.id
-// }
+	availability_zone = data.aws_availability_zones.default.names[count.index]
+	cidr_block = cidrsubnet(aws_vpc.default.cidr_block, 7, count.index)
+	vpc_id = aws_vpc.default.id
+}
 // resource "aws_security_group" "default" {
 // 	vpc_id = aws_vpc.default.id
 // }
