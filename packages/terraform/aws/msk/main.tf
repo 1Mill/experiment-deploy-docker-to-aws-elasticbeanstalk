@@ -15,18 +15,18 @@ resource "aws_subnet" "default" {
 resource "aws_security_group" "default" {
 	vpc_id = aws_vpc.default.id
 }
-// resource "aws_msk_cluster" "default" {
-// 	cluster_name = "delete-this-msk-cluster"
-// 	kafka_version = var.kafka_version
-// 	number_of_broker_nodes = 1 * length(data.aws_availability_zones.default.names)
+resource "aws_msk_cluster" "default" {
+	cluster_name = "delete-this-msk-cluster"
+	kafka_version = var.kafka_version
+	number_of_broker_nodes = 1 * length(data.aws_availability_zones.default.names)
 
-// 	broker_node_group_info  {
-// 		client_subnets = aws_subnet.default[*].id
-// 		ebs_volume_size = "100"
-// 		instance_type = "kafka.t3.small"
-// 		security_groups = [aws_security_group.default.id]
-// 	}
-// }
+	broker_node_group_info  {
+		client_subnets = aws_subnet.default[*].id
+		ebs_volume_size = "100"
+		instance_type = "kafka.t3.small"
+		security_groups = [aws_security_group.default.id]
+	}
+}
 // resource "aws_msk_configuration" "default" {
 // 	kafka_versions = [var.kafka_version]
 // 	name = var.name
