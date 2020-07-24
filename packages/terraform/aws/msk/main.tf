@@ -3,7 +3,7 @@ data "aws_availability_zones" "default" {
 }
 
 resource "aws_vpc" "default" {
-	cidr_block = "10.0.0.1/16"
+	cidr_block = "10.0.0.0/16"
 }
 resource "aws_subnet" "default" {
 	count = length(data.aws_availability_zones.default.names)
