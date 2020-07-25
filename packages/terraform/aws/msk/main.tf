@@ -22,8 +22,8 @@ resource "aws_msk_cluster" "default" {
 
 	broker_node_group_info  {
 		client_subnets = aws_subnet.default[*].id
-		ebs_volume_size = "100"
-		instance_type = "kafka.t3.small"
+		ebs_volume_size = var.ebs_volume_size_gib
+		instance_type = var.instance_type
 		security_groups = [aws_security_group.default.id]
 	}
 }
