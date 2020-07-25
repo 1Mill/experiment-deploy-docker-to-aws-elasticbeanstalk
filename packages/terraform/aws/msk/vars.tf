@@ -13,6 +13,6 @@ variable "zone_count" {
 
 	validation {
 		condition = 2 <= var.zone_count || var.zone_count <= 3
-		error_message = "Variable 'condition' must be either 2 or 3."
+		error_message = "Variable 'zone_count' must be either 2 or 3."
 	}
 }
