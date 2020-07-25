@@ -26,22 +26,27 @@ resource "aws_msk_cluster" "default" {
 		instance_type = var.instance_type
 		security_groups = [aws_security_group.default.id]
 	}
+	configuration_info {
+		arn = aws_msk_configuration.default.arn
+		revision = aws_msk_configuration.default.latest_revision
+	}
 }
-// resource "aws_msk_configuration" "default" {
-// 	kafka_versions = [var.kafka_version]
-// 	name = var.name
-// 	server_properties = <<PROPERTIES
-// 		# AWS Defaults
-// 		default.replication.factor=3
-// 		min.insync.replicas=2
-// 		num.io.threads=8
-// 		num.network.threads=5
-// 		num.partitions=1
-// 		num.replica.fetchers=2
-// 		socket.request.max.bytes=104857600
-// 		unclean.leader.election.enable=true
-// 		# Custom defaults
-// 		auto.create.topics.enable = true
-// 		delete.topic.enable = true
-// 	PROPERTIES
-// }
+resource "aws_msk_configuration" "default" {
+	// ! There is not API to delete this resource once created
+	kafka_versions = [var.kafka_version]
+	name = var.name
+	server_properties = <<PROPERTIES
+		# AWS Defaults
+		default.replication.factor=${var.zone_count}
+		min.insync.replicas=2
+		num.io.threads=8
+		num.network.threads=5
+		num.partitions=1
+		num.replica.fetchers=2
+		socket.request.max.bytes=104857600
+		unclean.leader.election.enable=true
+		# Custom defaults
+		auto.create.topics.enable = true
+		delete.topic.enable = true
+	PROPERTIES
+}
