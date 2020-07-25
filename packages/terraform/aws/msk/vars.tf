@@ -6,6 +6,9 @@ variable "kafka_version" {
 	default = "2.4.1"
 	type = string
 }
+variable "name" {
+	type = string
+}
 variable "zone_count" {
 	// MSK only supports 2 - 3 subnets
 	default = 3
