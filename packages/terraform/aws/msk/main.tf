@@ -36,4 +36,5 @@ resource "aws_msk_cluster" "default" {
 	}
 	encryption_info {}
 	open_monitoring {}
+	tags = {}
 }
