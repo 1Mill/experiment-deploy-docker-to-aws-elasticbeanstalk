@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  deploy:
+    command: sh -c "terraform init && terraform apply -auto-approve -lock-timeout=1200s"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_PROFILE: ${AWS_PROFILE}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      TF_VAR_IMAGE: docker.io/1mill/${COMPOSE_PROJECT_NAME}:${VERSION}
+    volumes:
+      - ./:/app
+
+  test-code:
+    command: sh -c "npm run test"
+    build: .
+    volumes:
+      - ./:/app
+
+  test-deploy:
+    command: sh -c "terraform init && terraform plan -lock-timeout=1200s"
+    image: 1mill/terraform-sops:alpine-2020-07-17T03-11-22
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_PROFILE: ${AWS_PROFILE}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      TF_VAR_IMAGE: docker.io/1mill/${COMPOSE_PROJECT_NAME}:${VERSION}
+    volumes:
+      - ./:/app
+
+  package:
+    build: .
+    image: docker.io/1mill/${COMPOSE_PROJECT_NAME}:${VERSION}
