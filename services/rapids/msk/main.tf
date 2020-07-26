@@ -25,7 +25,7 @@ resource "aws_msk_cluster" "default" {
 	encryption_info {
 		encryption_at_rest_kms_key_arn = aws_kms_key.default.arn
 		encryption_in_transit {
-			client_broker = "TLS"
+			client_broker = "TLS_PLAINTEXT"
 			in_cluster = true
 		}
 	}
