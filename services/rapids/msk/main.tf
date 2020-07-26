@@ -39,7 +39,6 @@ resource "aws_msk_cluster" "default" {
 			}
 		}
 	}
-	tags = {}
 }
 resource "aws_security_group" "default" {
 	vpc_id = aws_vpc.default.id
