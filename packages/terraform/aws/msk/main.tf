@@ -25,7 +25,7 @@ resource "aws_msk_cluster" "default" {
 	encryption_info {
 		encryption_at_rest_kms_key_arn = aws_kms_key.default.arn
 		encryption_in_transit {
-			client_broker = "TLS"
+			client_broker = "TLS_PLAINTEXT"
 			in_cluster = true
 		}
 	}
@@ -39,10 +39,22 @@ resource "aws_msk_cluster" "default" {
 			}
 		}
 	}
-	tags = {}
 }
 resource "aws_security_group" "default" {
 	vpc_id = aws_vpc.default.id
+
+	egress {
+		cidr_blocks = ["0.0.0.0/0"]
+		from_port = 0
+		protocol = "-1"
+		to_port = 0
+	}
+	ingress {
+		cidr_blocks = [aws_vpc.default.cidr_block]
+		from_port = 0
+		protocol = "-1"
+		to_port = 0
+	}
 }
 resource "aws_subnet" "default" {
 	count = length(slice(data.aws_availability_zones.default.names, 0, var.zone_count))
