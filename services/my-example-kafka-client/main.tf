@@ -32,6 +32,6 @@ module "production" {
 
 	environment = []
 	image = var.IMAGE
-	name = "production-docker-terraform-aws"
+	name = "production-my-example-kafka-client"
 	type = "website"
 }
