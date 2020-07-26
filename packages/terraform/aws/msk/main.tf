@@ -16,9 +16,6 @@ resource "aws_subnet" "default" {
 	cidr_block = cidrsubnet(aws_vpc.default.cidr_block, 8, count.index)
 	vpc_id = aws_vpc.default.id
 }
-resource "aws_security_group" "default" {
-	vpc_id = aws_vpc.default.id
-}
 resource "aws_msk_cluster" "default" {
 	cluster_name = var.name
 	kafka_version = var.kafka_version
@@ -34,4 +31,7 @@ resource "aws_msk_cluster" "default" {
 		arn = data.aws_msk_configuration.default.arn
 		revision = data.aws_msk_configuration.default.latest_revision
 	}
+}
+resource "aws_security_group" "default" {
+	vpc_id = aws_vpc.default.id
 }
