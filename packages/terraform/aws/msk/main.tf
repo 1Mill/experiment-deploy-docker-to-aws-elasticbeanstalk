@@ -34,7 +34,4 @@ resource "aws_msk_cluster" "default" {
 		arn = data.aws_msk_configuration.default.arn
 		revision = data.aws_msk_configuration.default.latest_revision
 	}
-	encryption_info {}
-	open_monitoring {}
-	tags = {}
 }
