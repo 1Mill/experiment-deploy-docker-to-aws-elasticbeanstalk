@@ -31,3 +31,6 @@ module "production" {
 output "brokers" {
 	value = module.production.brokers
 }
+output "brokers_tls" {
+	value = module.production.brokers_tls
+}
