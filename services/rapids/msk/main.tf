@@ -51,9 +51,9 @@ resource "aws_security_group" "default" {
 	}
 	ingress {
 		cidr_blocks = [aws_vpc.default.cidr_block]
-		from_port   = 443
-		protocol    = "tcp"
-		to_port     = 443
+		from_port = 0
+		protocol = "-1"
+		to_port = 0
 	}
 }
 resource "aws_subnet" "default" {
