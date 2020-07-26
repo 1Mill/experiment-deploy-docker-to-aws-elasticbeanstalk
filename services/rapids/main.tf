@@ -24,7 +24,8 @@ provider "aws" {
 	version = "~> 2.70"
 }
 module "production" {
-	source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/msk"
+	// source = "github.com/1Mill/experiment-deploy-docker-to-aws-elasticbeanstalk.git//packages/terraform/aws/msk"
+	source = "./msk"
 	name = "production-rapids"
 }
 output "brokers" {
