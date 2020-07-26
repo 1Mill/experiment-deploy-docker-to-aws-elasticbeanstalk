@@ -6,6 +6,7 @@ data "aws_msk_configuration" "default" {
 	name = "2-4-1--${var.zone_count}-replication-factor"
 }
 
+resource "aws_kms_key" "default" {}
 resource "aws_msk_cluster" "default" {
 	cluster_name = var.name
 	kafka_version = var.kafka_version
@@ -21,6 +22,24 @@ resource "aws_msk_cluster" "default" {
 		arn = data.aws_msk_configuration.default.arn
 		revision = data.aws_msk_configuration.default.latest_revision
 	}
+	encryption_info {
+		encryption_at_rest_kms_key_arn = aws_kms_key.default.arn
+		encryption_in_transit {
+			client_broker = "TLS"
+			in_cluster = true
+		}
+	}
+	open_monitoring {
+		prometheus {
+			jmx_exporter {
+				enabled_in_broker = false
+			}
+			node_exporter {
+				enabled_in_broker = false
+			}
+		}
+	}
+	tags = {}
 }
 resource "aws_security_group" "default" {
 	vpc_id = aws_vpc.default.id
