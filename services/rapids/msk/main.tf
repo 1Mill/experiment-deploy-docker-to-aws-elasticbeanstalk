@@ -42,6 +42,19 @@ resource "aws_msk_cluster" "default" {
 }
 resource "aws_security_group" "default" {
 	vpc_id = aws_vpc.default.id
+
+	egress {
+		cidr_blocks = ["0.0.0.0/0"]
+		from_port   = 0
+		protocol    = "-1"
+		to_port     = 0
+	}
+	ingress {
+		cidr_blocks = [aws_vpc.default.cidr_block]
+		from_port   = 443
+		protocol    = "tcp"
+		to_port     = 443
+	}
 }
 resource "aws_subnet" "default" {
 	count = length(slice(data.aws_availability_zones.default.names, 0, var.zone_count))
