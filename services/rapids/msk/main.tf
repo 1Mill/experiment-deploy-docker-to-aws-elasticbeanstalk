@@ -45,9 +45,9 @@ resource "aws_security_group" "default" {
 
 	egress {
 		cidr_blocks = ["0.0.0.0/0"]
-		from_port   = 0
-		protocol    = "-1"
-		to_port     = 0
+		from_port = 0
+		protocol = "-1"
+		to_port = 0
 	}
 	ingress {
 		cidr_blocks = [aws_vpc.default.cidr_block]
